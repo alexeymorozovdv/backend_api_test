@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Property;
+use App\Models\Product;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,11 +16,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        $this->call(PropertySeeder::class);
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $colors = Property::select('*')->where(Property::PROPERTIES_NAME_FIELD_NAME, 'color')->get();
+        $weights = Property::select('*')->where(Property::PROPERTIES_NAME_FIELD_NAME, 'weight')->get();
+
+        Product::factory(125)->create()->each(function ($product) use  ($colors, $weights) {
+            /** @var Product $product */
+            $product->properties()->save($colors->random());
+            $product->properties()->save($weights->random());
+            }
+        );
     }
 }
