@@ -18,6 +18,9 @@ class Property extends Model
 
     protected $fillable = ['name', 'value'];
 
+    /**
+     * @return BelongsToMany
+     */
     public function product(): BelongsToMany
     {
         return $this->belongsToMany(Product::class)->withPivot('product_id');

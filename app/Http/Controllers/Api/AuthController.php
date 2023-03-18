@@ -10,7 +10,13 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
+    /**
+     * Login a user
+     *
+     * @param Request $request
+     * @return false|string
+     */
+    public function login(Request $request): bool|string
     {
         $loginData = [];
         if ($request->has('email')) {
@@ -41,7 +47,14 @@ class AuthController extends Controller
             return json_encode('Unauthorised');
         }
     }
-    public function register(RegisterRequest $request)
+
+    /**
+     * Register a user
+     *
+     * @param RegisterRequest $request
+     * @return false|string
+     */
+    public function register(RegisterRequest $request): bool|string
     {
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
